@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<node   name="lcdscreen1_node"
+        pkg="amr-lcd-control"
+        type="publisher.py"
+        args=""
+        output="screen"/>
+
+<node   name="lcdsreen2_node"
+        pkg="amr-lcd-control"
+        type="publisher2.py"
+        args=""
+        output="screen"/>
+
+<node   name="subscriber"
+	pkg="amr-lcd-control"
+	type="lcd.py"
+	args=""
+	output="screen"/>
+
+</launch>
