@@ -7,34 +7,76 @@ from time import sleep, strftime
 from datetime import datetime
 from lcdbackpack import LcdBackpack
 
-
-#  Initialize LCD (must specify pinout and dimensions)
-#lcd = Adafruit_CharLCD(rs=26, en=19,
-#                       d4=13, d5=6, d6=5, d7=11,
-#                       cols=16, lines=2)
-
 class MySubscriber(object):
     def __init__(self):
-        self.ip = ""
+
+#new ip code
+	hostname = socket.gethostname()
+	IPAddr = socket.gethostbyname(hostname)	
+#
+        self.ip = IPAddr
         self.voltage = ""
         self.status = ""
         self.error = ""
-        
-        
+
+        self.begin()
+
+    def begin(self):  
+
         rospy.init_node('subscriber', anonymous=True)
         rospy.Subscriber('lcdscreen1', String, self.string1_callback)
         rospy.Subscriber('lcdscreen2', String, self.string2_callback)
-        rospy.spin()
-   #     self.contr_obj = ControlValuePub(kp=1, kd=0.1, dt=10)
+        rospy.spin()          
 
     def string1_callback(self,msg):
         rospy.loginfo('got string 1 %s', msg.data)
-        self.voltage = msg.data
+        self.ip = msg.data
+        self.backpack()
 
     def string2_callback(self,msg):
-    # This callback is the boss, it dictates the publish rate
         rospy.loginfo('got string 2 %s', msg.data)
         self.status = msg.data
+        self.backpack()
+
+    def backpack(self):
+        #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+        print("Are we in?") 
+        lcdbackpack = LcdBackpack('/dev/ttyACM0', 115200)
+        lcdbackpack.connect()
+        lcdbackpack.clear()
+        lcdbackpack.set_backlight_rgb(255,0,255)
+        lcdbackpack.set_cursor_home()
+            
+    #    lcdbackpack.set_autoscroll(1)
+#        ip = get_ip_address()
+        
+        lcdbackpack.write("IP: " + self.ip)
+        lcdbackpack.set_cursor_position(1,2) 
+        lcdbackpack.write("V: " + self.voltage)
+        sleep(2)
+           
+        lcdbackpack.clear()   
+        lcdbackpack.write("Status: " + self.status)
+        lcdbackpack.set_cursor_position(1,2) 
+        lcdbackpack.write("Error: " + self.error)
+        sleep(2)
+           
+
+        lcdbackpack.clear()
+                #lcdbackpack.write("Voltage: ")
+                #lcdbackpack.write("Status:  ")
+                #sleep(5)
+
+
+        #        lcd.message(datetime.now().strftime('%b %d  %H:%M:%S\n'))
+         #       lcd.message('{}'.format(ip))
+                
+                # Once the backpack has started, waits for listener
+    #            print('Above listener')
+     #           listener()
+      #          print('Below listener')
+
+
 
 
 if __name__ == '__main__':
@@ -50,77 +92,6 @@ if __name__ == '__main__':
 
 
 
-
-
-
-
-
-
-
-
-
-
-def get_ip_address():
-    return [
-             (s.connect(('8.8.8.8', 53)),
-              s.getsockname()[0],
-              s.close()) for s in
-                  [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]
-           ][0][1]
-
-def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
-    
-    lcdbackpack = LcdBackpack('/dev/ttyACM0', 115200)
-    lcdbackpack.connect()
-    lcdbackpack.clear()
-    lcdbackpack.set_backlight_rgb(255,0,255)
-    lcdbackpack.set_cursor_home()
-        
-#    lcdbackpack.set_autoscroll(1)
-    ip = get_ip_address()
-    lcdbackpack.write(ip)
-    lcdbackpack.write("Voltage: " + data.data)
-#    lcdbackpack.write("0 1 2 3 4 5 6 7 8 ")
-    sleep(1)
- #   lcdbackpack.clear()
- #   lcdbackpack.write("1")
- #   sleep(1)
-        
-    lcdbackpack.clear()
-            #lcdbackpack.write("Voltage: ")
-            #lcdbackpack.write("Status:  ")
-            #sleep(5)
-
-
-    #        lcd.message(datetime.now().strftime('%b %d  %H:%M:%S\n'))
-     #       lcd.message('{}'.format(ip))
-            
-            # Once the backpack has started, waits for listener
-#            print('Above listener')
- #           listener()
-  #          print('Below listener')
-
-
-def listener():
-    rospy.init_node('listener', anonymous=True)
-    rospy.Subscriber("lcdscreen", String, callback)
-    rospy.spin()
-
-# if __name__ == '__main__':
-
-#    try:
-
-#        listener() 
-        
-#    except KeyboardInterrupt:
-#        print('CTRL-C pressed.  Program exiting...')
-
-
-#    finally:
-#        lcdbackpack.clear()
-
-  # Thank you to: https://www.rototron.info/lcd-display-tutorial-for-raspberry-pi/
 
   # Currently using the lcdbackpack library
   # https://github.com/dinofizz/adafruit-usb-serial-lcd-backpack
