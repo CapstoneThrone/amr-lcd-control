@@ -15,25 +15,24 @@ class MySubscriber(object):
 	IPAddr = socket.gethostbyname(hostname)	
 #
         self.ip = IPAddr
-        self.voltage = ""
+        self.voltage = 0.0
         self.status = ""
         self.error = ""
 
         self.begin()
 
     def begin(self):  
-
         rospy.init_node('subscriber', anonymous=True)
-        rospy.Subscriber('lcdscreen1', String, self.string1_callback)
-        rospy.Subscriber('lcdscreen2', String, self.string2_callback)
+        rospy.Subscriber('lcdscreen1', String, self.string_callback)
+        rospy.Subscriber('lcdscreen2', float32, self.float32_callback)
         rospy.spin()          
 
-    def string1_callback(self,msg):
-        rospy.loginfo('got string 1 %s', msg.data)
+    def float32_callback(self,msg):
+        rospy.loginfo('got string 1 %f', msg.data)
         self.ip = msg.data
         self.backpack()
 
-    def string2_callback(self,msg):
+    def string_callback(self,msg):
         rospy.loginfo('got string 2 %s', msg.data)
         self.status = msg.data
         self.backpack()

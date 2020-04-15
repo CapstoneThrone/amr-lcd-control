@@ -4,15 +4,16 @@ import rospy
 from std_msgs.msg import String
 
 def talker():
-    pub = rospy.Publisher('lcdscreen2', String, queue_size=10)
+    pub = rospy.Publisher('lcdscreen2', float32, queue_size=10)
     rospy.init_node('sample_publisher2', anonymous=True)
 
     rate = rospy.Rate(1) # 1hz
     while not rospy.is_shutdown():
 
-        test = "test2"
-        rospy.loginfo(test)
-        pub.publish(test)
+       # test = "test2"
+	num = 17
+        rospy.loginfo(num)
+        pub.publish(num)
 
         rate.sleep()
 
