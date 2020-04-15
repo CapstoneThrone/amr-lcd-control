@@ -2,9 +2,10 @@
 
 import rospy
 from std_msgs.msg import String
+from std_msgs.msg import Float32
 
 def talker():
-    pub = rospy.Publisher('lcdscreen2', float32, queue_size=10)
+    pub = rospy.Publisher('mcVoltageFeedback', Float32, queue_size=10)
     rospy.init_node('sample_publisher2', anonymous=True)
 
     rate = rospy.Rate(1) # 1hz
