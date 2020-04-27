@@ -7,11 +7,13 @@
         args=""
         output="screen"/>
 
-<node   name="lcdsreen2_node"
+<!-- <node   name="l"
         pkg="amr-lcd-control"
         type="publisher2.py"
         args=""
-        output="screen"/>
+	output="screen"/> -->
+
+<!-- <node name="motor_control" pkg="rosserial_arduino" type="serial_node.py" required="true" args="/dev/ttyACM0" /> -->
 
 <node   name="subscriber"
 	pkg="amr-lcd-control"

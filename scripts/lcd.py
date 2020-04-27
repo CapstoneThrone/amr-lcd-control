@@ -25,7 +25,7 @@ class MySubscriber(object):
     def begin(self):  
         rospy.init_node('subscriber', anonymous=True)
         rospy.Subscriber('lcdscreen1', String, self.string_callback)
-        rospy.Subscriber('mcVoltageFeedback', Float32, self.float32_callback)
+        rospy.Subscriber('mcVoltage', Float32, self.float32_callback)
         rospy.spin()          
 
     def float32_callback(self,msg):
@@ -41,7 +41,7 @@ class MySubscriber(object):
     def backpack(self):
         #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         print("Are we in?") 
-        lcdbackpack = LcdBackpack('/dev/ttyACM0', 115200)
+        lcdbackpack = LcdBackpack('/dev/ttyACM1', 115200)
         lcdbackpack.connect()
         lcdbackpack.clear()
         lcdbackpack.set_backlight_rgb(255,0,255)
