@@ -29,19 +29,19 @@ class MySubscriber(object):
         rospy.spin()          
 
     def float32_callback(self,msg):
-        rospy.loginfo(msg.data)
+        rospy.logdebug(msg.data)
         self.voltage = str(msg.data)
         self.backpack()
 
     def string_callback(self,msg):
-        rospy.loginfo('got string 2 %s', msg.data)
+        rospy.logdebug('got string 2 %s', msg.data)
         self.status = msg.data
         self.backpack()
 
     def backpack(self):
         #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
-        print("Are we in?") 
-        lcdbackpack = LcdBackpack('/dev/ttyACM1', 115200)
+        #print("Are we in?") 
+        lcdbackpack = LcdBackpack('/dev/ttyACM0', 115200)
         lcdbackpack.connect()
         lcdbackpack.clear()
         lcdbackpack.set_backlight_rgb(255,0,255)

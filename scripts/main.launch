@@ -4,8 +4,7 @@
 <node   name="lcdscreen1_node"
         pkg="amr-lcd-control"
         type="publisher.py"
-        args=""
-        output="screen"/>
+        args=""/>
 
 <!-- <node   name="l"
         pkg="amr-lcd-control"
@@ -19,6 +18,6 @@
 	pkg="amr-lcd-control"
 	type="lcd.py"
 	args=""
-	output="screen"/>
+	/>
 
 </launch>
